@@ -9,6 +9,15 @@
 - results: [results/regression.md](results/regression_net.md)
 
 
+## Access to internet (without adjusted values)
+
+- R file: [code/regression2.R](code/regression_net2.R)
+- R markdown: [code/regression2.Rmd](code/regression_net2.Rmd)
+- data source: [data/API_IT.NET.USER.ZS_DS2_en_excel_v2_4578034.xlsx](data/API_IT.NET.USER.ZS_DS2_en_excel_v2_4578034.xlsx)
+- results: [results/regression2.md](results/regression_net2.md)
+
+
+
 ## Access to cellphone
 
 - R file: [code/regression.R](code/regression_cel.R)

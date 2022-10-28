@@ -276,10 +276,10 @@ R2nls(fit)
 
 ``` r
 pyear <- seq(min(dat2$year), 2030, 1)
-plot(dat2, xlim = c(min(pyear), max(pyear)), ylim = c(0,140),
+plot(dat2, xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
      pch=16, col="blue", main = grp, xaxt='n',yaxt='n', cex = 0.5)
 axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 140, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 ```
@@ -290,10 +290,10 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 
 ``` r
 pyear <- seq(1990, 2030, 1)
-plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,140),
+plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100),
      ylab = "IT.CEL.SETS.P2", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 140, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("blue","red","orange","green")
 names(colors) <- income_grp
@@ -310,10 +310,10 @@ legend("bottomright", legend=c("high income","low income","lower middle income",
 
 ``` r
 pyear <- seq(1990, 2030, 1)
-plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,140),
+plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100),
      ylab = "IT.CEL.SETS.P2", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 140, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("blue","red","orange","green")
 names(colors) <- income_grp

@@ -12,9 +12,9 @@ comment: This file is automatically generate by Shiny-Statistic app (https://sta
          You should have received a copy of the GNU General Public License.
          If not, see <https://www.gnu.org/licenses/>.
 output:
-  html_document:
-    toc: true
   github_document:
+    toc: true
+  html_document:
     toc: true
   word_document:
     toc: true

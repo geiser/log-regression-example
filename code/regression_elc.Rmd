@@ -180,8 +180,8 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 pyear <- seq(1990, 2080, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100),
      ylab = "EG.ELC.ACCS.ZS", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("blue","red","orange","green")
 names(colors) <- income_grp
@@ -198,8 +198,8 @@ legend("bottomright", legend=c("high income","low income","lower middle income",
 pyear <- seq(1990, 2080, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100),
      ylab = "EG.ELC.ACCS.ZS", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("blue","red","orange","green")
 names(colors) <- income_grp

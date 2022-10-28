@@ -20,8 +20,15 @@
 
 ## Access to cellphone
 
-- R file: [code/regression.R](code/regression_cel.R)
-- R markdown: [code/regression.Rmd](code/regression_cel.Rmd)
+- R file: [code/regression_cel.R](code/regression_cel.R)
+- R markdown: [code/regression_cel.Rmd](code/regression_cel.Rmd)
 - data source: [data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx](data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx)
-- results: [results/regression.md](results/regression_cel.md)
+- results: [results/regression_cel.md](results/regression_cel.md)
 
+
+## Access to electricity
+
+- R file: [code/regression_elc.R](code/regression_elc.R)
+- R markdown: [code/regression_elc.Rmd](code/regression_elc.Rmd)
+- data source: [data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx](data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx)
+- results: [results/regression_elc.md](results/regression_elc.md)

@@ -272,7 +272,7 @@ names(colors) <- income_grp
 for (grp in income_grp) {
   gdat <- get_data(dat, grp, is.mean = T)
   points(x=gdat$year, y=gdat$EG.ELC.ACCS.ZS, pch=16, col=colors[grp], xaxt='n', yaxt='n', cex=0.75)
-  matlines(pyear, predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=1)
+  matlines(pyear, predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=2)
 }
 legend("bottomright", legend=c("high income","low income","lower middle income","upper middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
@@ -292,7 +292,7 @@ names(colors) <- income_grp
 for (grp in income_grp) {
   gdat <- get_data(dat, grp, is.mean = F)
   points(x=gdat$year, y=gdat$EG.ELC.ACCS.ZS, pch=16, col=colors[grp], xaxt='n', yaxt='n', cex=0.25)
-  matlines(pyear, col = colors[grp], predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=1)
+  matlines(pyear, col = colors[grp], predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=2)
 }
 legend("bottomright", legend=c("high income","low income","lower middle income","upper middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)

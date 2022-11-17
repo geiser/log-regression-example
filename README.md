@@ -32,3 +32,12 @@
 - R markdown: [code/regression_elc.Rmd](code/regression_elc.Rmd)
 - data source: [data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx](data/API_IT.CEL.SETS.P2_DS2_en_excel_v2_4576197.xlsx)
 - results: [results/regression_elc.md](results/regression_elc.md)
+
+
+
+## Inverse of learning poverty
+
+- R file: [code/regression_lpv.R](code/regression_lpv.R)
+- R markdown: [code/regression_lpv.Rmd](code/regression_lpv.Rmd)
+- data source: [data/lpv_edstats_update2021.xlsx](data/lpv_edstats_update2021.xlsx)
+- results: [results/regression_lpv.md](results/regression_lpv.md)

@@ -41,3 +41,11 @@
 - R markdown: [code/regression_lpv.Rmd](code/regression_lpv.Rmd)
 - data source: [data/lpv_edstats_update2021.xlsx](data/lpv_edstats_update2021.xlsx)
 - results: [results/regression_lpv.md](results/regression_lpv.md)
+
+
+## ICT skill 
+
+- R file: [code/regression_ict.R](code/regression_lpv.R)
+- R markdown: [code/regression_ict.Rmd](code/regression_ict.Rmd)
+- data source: [data/ICT_and_Digital_Skill.xlsx](data/ICT_and_Digital_Skill.xlsx)
+- results: [results/regression_ict.md](results/regression_ict.md)

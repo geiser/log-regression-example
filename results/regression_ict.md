@@ -5,7 +5,6 @@ Geiser C. Challco <geiser@alumni.usp.br>
 
 - <a href="#initial-variables-and-data"
   id="toc-initial-variables-and-data">Initial Variables and Data</a>
-  - <a href="#getting-dsgi" id="toc-getting-dsgi">getting DSGI</a>
   - <a href="#getting-gci-40-digital-skills"
     id="toc-getting-gci-40-digital-skills">getting GCI 4.0 (Digital
     Skills)</a>
@@ -37,17 +36,7 @@ Geiser C. Challco <geiser@alumni.usp.br>
 ``` r
 mtd.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "metadata")
 GCI.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "Digital Skill value")
-DSGI.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "DSGI-2021")
 CIL.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "ICILS (CIL)")
-```
-
-### getting DSGI
-
-``` r
-dsgi.idx <- which(mtd.df$`Indicator Id`=="DSGI")
-dsgi.val <- 100*(DSGI.df$DSGI - mtd.df$min[dsgi.idx])/(mtd.df$max[dsgi.idx] - mtd.df$min[dsgi.idx])
-
-dat <- data.frame(country=DSGI.df$Country,value=dsgi.val,year=2021,IncomeGroup=DSGI.df$IncomeGroup, indicator="DSGI")
 ```
 
 ### getting GCI 4.0 (Digital Skills)
@@ -56,10 +45,8 @@ dat <- data.frame(country=DSGI.df$Country,value=dsgi.val,year=2021,IncomeGroup=D
 gci.idx <-which(mtd.df$`Indicator Id`=="41400")
 gci.val <- 100*(GCI.df$`2017` - mtd.df$min[gci.idx])/(mtd.df$max[gci.idx] - mtd.df$min[gci.idx])
 
-dat <- rbind(
-  dat,
-  data.frame(country=GCI.df$`Country Name`,value=gci.val,year=2017,IncomeGroup=GCI.df$IncomeGroup, indicator="GCI")
-)
+dat <- data.frame(country=GCI.df$`Country Name`,value=gci.val,year=2017,IncomeGroup=GCI.df$IncomeGroup, indicator="GCI")
+
 
 gci.val <- 100*(GCI.df$`2018` - mtd.df$min[gci.idx])/(mtd.df$max[gci.idx] - mtd.df$min[gci.idx])
 
@@ -97,8 +84,8 @@ income_grp <- unique(dat$IncomeGroup)
 (income_grp <- income_grp[!is.na(income_grp)])
 ```
 
-    ## [1] "High income"         "Upper middle income" "Lower middle income"
-    ## [4] "Low income"
+    ## [1] "Upper middle income" "High income"         "Low income"         
+    ## [4] "Lower middle income"
 
 ## Calculating data with mean values
 
@@ -113,62 +100,15 @@ colnames(df) <- c("year",income_grp)
 knitr::kable(df)
 ```
 
-| year | High income | Upper middle income | Lower middle income | Low income |
-|-----:|------------:|--------------------:|--------------------:|-----------:|
-| 2017 |    64.84856 |            52.34841 |            48.70300 |   36.03130 |
-| 2018 |    61.65731 |            51.50400 |            49.32964 |   36.38322 |
-| 2019 |    63.61129 |            50.85967 |            50.06723 |   38.48896 |
-| 2021 |    60.97826 |            48.73077 |            39.04545 |   25.30000 |
+| year | Upper middle income | High income | Low income | Lower middle income |
+|-----:|--------------------:|------------:|-----------:|--------------------:|
+| 2017 |            52.34841 |    64.84856 |   36.03130 |            48.70300 |
+| 2018 |            51.50400 |    61.65731 |   36.38322 |            49.32964 |
+| 2019 |            50.85967 |    63.61129 |   38.48896 |            50.06723 |
 
 ## Linear Regression
 
 ### Linear regression for high income countries
-
-``` r
-grp = income_grp[1]
-dat2 <- get_data(dat, grp, F, c("indicator"))
-
-fit <- lm(ICT.SKILL ~ year, data=dat2)
-smdls[[grp]] <- fit
-summary(fit)
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = ICT.SKILL ~ year, data = dat2)
-    ## 
-    ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -25.5343  -7.5815   0.3193   7.7818  21.6269 
-    ## 
-    ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)
-    ## (Intercept) -1106.6453   710.2426  -1.558    0.121
-    ## year            0.5790     0.3519   1.645    0.101
-    ## 
-    ## Residual standard error: 10.14 on 204 degrees of freedom
-    ## Multiple R-squared:  0.0131, Adjusted R-squared:  0.00826 
-    ## F-statistic: 2.707 on 1 and 204 DF,  p-value: 0.1014
-
-``` r
-pyear <- seq(min(dat2$year), 2030, 1)
-
-inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"), "DSGI"=c(18,"purple"))
-plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
-     main = grp, xaxt='n',yaxt='n', xlab = "year", ylab = "ICT.SKILL")
-axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
-for (ind in names(inds)) {
-  points(dat2$year[which(dat2$indicator==ind)], dat2$ICT.SKILL[which(dat2$indicator==ind)],
-         pch=as.integer(inds[[ind]][1]), col=inds[[ind]][2], cex=0.5)
-}
-matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
-legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
-```
-
-![](regression_ict_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-
-### Linear regression for upper middle income countries
 
 ``` r
 grp = income_grp[2]
@@ -184,22 +124,24 @@ summary(fit)
     ## lm(formula = ICT.SKILL ~ year, data = dat2)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -18.787  -7.249  -1.638   6.998  22.420 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -22.4815  -6.6657  -0.3901   7.1731  21.4553 
     ## 
     ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)
-    ## (Intercept)  372.8534  1140.9848   0.327    0.744
-    ## year          -0.1596     0.5652  -0.282    0.778
+    ##               Estimate Std. Error t value Pr(>|t|)   
+    ## (Intercept) -3082.2695   993.3054  -3.103  0.00227 **
+    ## year            1.5586     0.4923   3.166  0.00186 **
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 10.2 on 111 degrees of freedom
-    ## Multiple R-squared:  0.000718,   Adjusted R-squared:  -0.008285 
-    ## F-statistic: 0.07975 on 1 and 111 DF,  p-value: 0.7782
+    ## Residual standard error: 9.982 on 158 degrees of freedom
+    ## Multiple R-squared:  0.05965,    Adjusted R-squared:  0.0537 
+    ## F-statistic: 10.02 on 1 and 158 DF,  p-value: 0.001856
 
 ``` r
 pyear <- seq(min(dat2$year), 2030, 1)
 
-inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"), "DSGI"=c(18,"purple"))
+inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
      main = grp, xaxt='n',yaxt='n', xlab = "year", ylab = "ICT.SKILL")
 axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
@@ -212,12 +154,12 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-### Linear regression for lower middle income countries
+### Linear regression for upper middle income countries
 
 ``` r
-grp = income_grp[3]
+grp = income_grp[1]
 dat2 <- get_data(dat, grp, F, c("indicator"))
 
 fit <- lm(ICT.SKILL ~ year, data=dat2)
@@ -230,24 +172,22 @@ summary(fit)
     ## lm(formula = ICT.SKILL ~ year, data = dat2)
     ## 
     ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -19.3406  -5.4096  -0.3726   7.0030  21.5147 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -20.338  -7.839  -1.962   8.829  22.009 
     ## 
     ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) 5040.2163  1236.7435   4.075 9.96e-05 ***
-    ## year          -2.4735     0.6126  -4.037 0.000114 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ##               Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept) -1572.9009  1849.1758  -0.851    0.397
+    ## year            0.8049     0.9164   0.878    0.382
     ## 
-    ## Residual standard error: 8.58 on 89 degrees of freedom
-    ## Multiple R-squared:  0.1548, Adjusted R-squared:  0.1453 
-    ## F-statistic:  16.3 on 1 and 89 DF,  p-value: 0.0001142
+    ## Residual standard error: 10.38 on 85 degrees of freedom
+    ## Multiple R-squared:  0.008993,   Adjusted R-squared:  -0.002665 
+    ## F-statistic: 0.7714 on 1 and 85 DF,  p-value: 0.3823
 
 ``` r
 pyear <- seq(min(dat2$year), 2030, 1)
 
-inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"), "DSGI"=c(18,"purple"))
+inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
      main = grp, xaxt='n',yaxt='n', xlab = "year", ylab = "ICT.SKILL")
 axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
@@ -260,9 +200,9 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-### Linear regression for low income countries
+### Linear regression for lower middle income countries
 
 ``` r
 grp = income_grp[4]
@@ -279,23 +219,21 @@ summary(fit)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -17.6017  -5.2156  -0.7464   5.6521  12.3973 
+    ## -16.8863  -4.8157  -0.8288   5.4601  19.6357 
     ## 
     ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept) 5947.8254  1727.2605   3.444  0.00162 **
-    ## year          -2.9294     0.8555  -3.424  0.00171 **
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ##               Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept) -1327.1436  2396.9420  -0.554    0.582
+    ## year            0.6821     1.1878   0.574    0.568
     ## 
-    ## Residual standard error: 7.453 on 32 degrees of freedom
-    ## Multiple R-squared:  0.2681, Adjusted R-squared:  0.2453 
-    ## F-statistic: 11.72 on 1 and 32 DF,  p-value: 0.001709
+    ## Residual standard error: 8.056 on 67 degrees of freedom
+    ## Multiple R-squared:  0.004898,   Adjusted R-squared:  -0.009954 
+    ## F-statistic: 0.3298 on 1 and 67 DF,  p-value: 0.5677
 
 ``` r
 pyear <- seq(min(dat2$year), 2030, 1)
 
-inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"), "DSGI"=c(18,"purple"))
+inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
      main = grp, xaxt='n',yaxt='n', xlab = "year", ylab = "ICT.SKILL")
 axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
@@ -308,7 +246,53 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+### Linear regression for low income countries
+
+``` r
+grp = income_grp[3]
+dat2 <- get_data(dat, grp, F, c("indicator"))
+
+fit <- lm(ICT.SKILL ~ year, data=dat2)
+smdls[[grp]] <- fit
+summary(fit)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = ICT.SKILL ~ year, data = dat2)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -14.0059  -5.3570   0.2474   5.0765  15.5831 
+    ## 
+    ## Coefficients:
+    ##              Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept) -2517.326   3633.304  -0.693    0.496
+    ## year            1.266      1.800   0.703    0.489
+    ## 
+    ## Residual standard error: 7.164 on 22 degrees of freedom
+    ## Multiple R-squared:  0.02197,    Adjusted R-squared:  -0.02248 
+    ## F-statistic: 0.4943 on 1 and 22 DF,  p-value: 0.4894
+
+``` r
+pyear <- seq(min(dat2$year), 2030, 1)
+
+inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
+plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
+     main = grp, xaxt='n',yaxt='n', xlab = "year", ylab = "ICT.SKILL")
+axis(1, at = seq(min(pyear), max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+for (ind in names(inds)) {
+  points(dat2$year[which(dat2$indicator==ind)], dat2$ICT.SKILL[which(dat2$indicator==ind)],
+         pch=as.integer(inds[[ind]][1]), col=inds[[ind]][2], cex=0.5)
+}
+matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
+legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
+```
+
+![](regression_ict_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### Summary of linear regression with average values
 
@@ -319,18 +303,18 @@ axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray",
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 
-colors <- c("blue","green","orange","red")
+colors <- c("green","blue","red","orange")
 names(colors) <- income_grp
 for (grp in income_grp) {
   gdat <- get_data(dat, grp, is.mean = T)
   points(x=gdat$year, y=gdat$ICT.SKILL, pch=16, col=colors[grp], xaxt='n', yaxt='n', cex=1)
   matlines(pyear, predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=0.75)
 }
-legend("bottomright", legend=c("high income","upper middle income","lower middle income","low income"),
+legend("bottomright", legend=c("upper middle income","high income","low income","lower middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 pyear <- seq(min(dat$year), 2030, 1)
@@ -338,15 +322,15 @@ plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "IC
 axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
-colors <- c("blue","green","orange","red")
+colors <- c("green","blue","red","orange")
 names(colors) <- income_grp
 for (grp in income_grp) {
   gdat <- get_data(dat, grp, is.mean = F)
-  points(x=gdat$year, y=gdat$ICT.SKILL, pch=16, col=as.character(colors[grp]), xaxt='n', yaxt='n', cex=0.75)
+  points(x=gdat$year, y=gdat$ICT.SKILL, pch=16, col=as.character(colors[grp]), xaxt='n', yaxt='n', cex=0.5)
   matlines(pyear, col = colors[grp], predict(smdls[[grp]], newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 }
-legend("bottomright", legend=c("high income","upper middle income","lower middle income","low income"),
+legend("bottomright", legend=c("upper middle income","high income","low income","lower middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->

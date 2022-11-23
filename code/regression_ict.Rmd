@@ -170,8 +170,12 @@ smdls[[grp]] <- fit
 summary(fit)
 ```
 
+```{r}
+predict(fit, newdata=list(year=c(2079)))
+```
+
 ```{r, dpi=300, fig.width=12, fig.height=8}
-pyear <- seq(min(dat2$year), 2030, 1)
+pyear <- seq(min(dat2$year), 2079, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -197,8 +201,12 @@ smdls[[grp]] <- fit
 summary(fit)
 ```
 
+```{r}
+predict(fit, newdata=list(year=c(2093)))
+```
+
 ```{r, dpi=300, fig.width=12, fig.height=8}
-pyear <- seq(min(dat2$year), 2030, 1)
+pyear <- seq(min(dat2$year), 2093, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -224,8 +232,13 @@ smdls[[grp]] <- fit
 summary(fit)
 ```
 
+```{r}
+predict(fit, newdata=list(year=c(2068)))
+```
+
+
 ```{r, dpi=300, fig.width=12, fig.height=8}
-pyear <- seq(min(dat2$year), 2030, 1)
+pyear <- seq(min(dat2$year), 2068, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -243,9 +256,9 @@ legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  
 ### Summary of linear regression with average values
 
 ```{r, dpi=300, fig.width=12, fig.height=8}
-pyear <- seq(min(dat$year), 2030, 1)
+pyear <- seq(min(dat$year), 2095, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 
@@ -262,9 +275,9 @@ legend("bottomright", legend=c("upper middle income","high income","low income",
 
 
 ```{r, dpi=300, fig.width=12, fig.height=8}
-pyear <- seq(min(dat$year), 2030, 1)
+pyear <- seq(min(dat$year), 2095, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("green","blue","red","orange")

@@ -3,12 +3,12 @@
 #' author: Geiser C. Challco <geiser@alumni.usp.br>
 #' comment: This file is automatically generate by Shiny-Statistic app (https://statistic.geiser.tech/)
 #'          Author - Geiser C. Challco <geiser@alumni.usp.br>
-#'          
+#'
 #'          Shiny-Statistic is distributed in the hope that it will be useful,
 #'          but WITHOUT ANY WARRANTY; without even the implied warranty of
 #'          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #'          GNU General Public License for more details.
-#'          
+#'
 #'          You should have received a copy of the GNU General Public License.
 #'          If not, see <https://www.gnu.org/licenses/>.
 #' output:
@@ -20,7 +20,7 @@
 #'     toc: true
 #' fontsize: 10pt
 #' ---
-#' 
+#'
 ## ----setup, include=FALSE-------------------------------------------------------------------------
 ## Install and Load Packages and functions
 wants <- c('readxl','dplyr')
@@ -56,19 +56,19 @@ library(readxl)
 library(dplyr)
 library(aomisc)
 
-#' 
+#'
 
-#' 
+#'
 #' ## Initial Variables and Data
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
-mtd.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "metadata")
-GCI.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "Digital Skill value")
-CIL.df <- read_excel("../data/ICT_and_Digital_Skill.xlsx", sheet = "ICILS (CIL)")
+mtd.df <- read_excel("data/ICT_and_Digital_Skill.xlsx", sheet = "metadata")
+GCI.df <- read_excel("data/ICT_and_Digital_Skill.xlsx", sheet = "Digital Skill value")
+CIL.df <- read_excel("data/ICT_and_Digital_Skill.xlsx", sheet = "ICILS (CIL)")
 
-#' 
+#'
 #' ### getting GCI 4.0 (Digital Skills)
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 gci.idx <-which(mtd.df$`Indicator Id`=="41400")
 gci.val <- 100*(GCI.df$`2017` - mtd.df$min[gci.idx])/(mtd.df$max[gci.idx] - mtd.df$min[gci.idx])
@@ -90,9 +90,9 @@ dat <- rbind(
   data.frame(country=GCI.df$`Country Name`,value=gci.val,year=2019,IncomeGroup=GCI.df$IncomeGroup, indicator="GCI")
 )
 
-#' 
+#'
 #' ### getting CIL (ICILS)
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 cli.idx <-which(mtd.df$`Indicator Id`=="CIL")
 cli.val <- 100*(CIL.df$CIL - mtd.df$min[cli.idx])/(mtd.df$max[cli.idx] - mtd.df$min[cli.idx])
@@ -111,9 +111,9 @@ smdls <- c()
 income_grp <- unique(dat$IncomeGroup)
 (income_grp <- income_grp[!is.na(income_grp)])
 
-#' 
+#'
 #' ## Calculating data with mean values
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 df <- get_data(dat, income_grp[1], is.mean = T)
 for (i in 2:length(income_grp)) {
@@ -124,11 +124,11 @@ colnames(df) <- c("year",income_grp)
 
 knitr::kable(df)
 
-#' 
+#'
 #' ## Linear Regression
-#' 
+#'
 #' ### Linear regression for high income countries
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 grp = income_grp[2]
 dat2 <- get_data(dat, grp, F, c("indicator"))
@@ -137,9 +137,9 @@ fit <- lm(ICT.SKILL ~ year, data=dat2)
 smdls[[grp]] <- fit
 summary(fit)
 
-#' 
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
-pyear <- seq(min(dat2$year), 2030, 1)
+pyear <- seq(min(dat2$year), 2042, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -153,9 +153,9 @@ for (ind in names(inds)) {
 matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 
-#' 
+#'
 #' ### Linear regression for upper middle income countries
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 grp = income_grp[1]
 dat2 <- get_data(dat, grp, F, c("indicator"))
@@ -164,7 +164,7 @@ fit <- lm(ICT.SKILL ~ year, data=dat2)
 smdls[[grp]] <- fit
 summary(fit)
 
-#' 
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
 pyear <- seq(min(dat2$year), 2030, 1)
 
@@ -180,9 +180,9 @@ for (ind in names(inds)) {
 matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 
-#' 
+#'
 #' ### Linear regression for lower middle income countries
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 grp = income_grp[4]
 dat2 <- get_data(dat, grp, F, c("indicator"))
@@ -191,7 +191,7 @@ fit <- lm(ICT.SKILL ~ year, data=dat2)
 smdls[[grp]] <- fit
 summary(fit)
 
-#' 
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
 pyear <- seq(min(dat2$year), 2030, 1)
 
@@ -207,9 +207,9 @@ for (ind in names(inds)) {
 matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 
-#' 
+#'
 #' ### Linear regression for low income countries
-#' 
+#'
 ## -------------------------------------------------------------------------------------------------
 grp = income_grp[3]
 dat2 <- get_data(dat, grp, F, c("indicator"))
@@ -218,7 +218,7 @@ fit <- lm(ICT.SKILL ~ year, data=dat2)
 smdls[[grp]] <- fit
 summary(fit)
 
-#' 
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
 pyear <- seq(min(dat2$year), 2030, 1)
 
@@ -234,9 +234,9 @@ for (ind in names(inds)) {
 matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), lwd=1.25)
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 
-#' 
+#'
 #' ### Summary of linear regression with average values
-#' 
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
 pyear <- seq(min(dat$year), 2030, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
@@ -254,8 +254,8 @@ for (grp in income_grp) {
 legend("bottomright", legend=c("upper middle income","high income","low income","lower middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 
-#' 
-#' 
+#'
+#'
 ## ---- dpi=300, fig.width=12, fig.height=8---------------------------------------------------------
 pyear <- seq(min(dat$year), 2030, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
@@ -272,5 +272,5 @@ for (grp in income_grp) {
 legend("bottomright", legend=c("upper middle income","high income","low income","lower middle income"),
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 
-#' 
-#' 
+#'
+#'

@@ -185,7 +185,14 @@ summary(fit)
     ## F-statistic: 0.7714 on 1 and 85 DF,  p-value: 0.3823
 
 ``` r
-pyear <- seq(min(dat2$year), 2030, 1)
+predict(fit, newdata=list(year=c(2079)))
+```
+
+    ##      1 
+    ## 100.41
+
+``` r
+pyear <- seq(min(dat2$year), 2079, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -200,7 +207,7 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### Linear regression for lower middle income countries
 
@@ -231,7 +238,14 @@ summary(fit)
     ## F-statistic: 0.3298 on 1 and 67 DF,  p-value: 0.5677
 
 ``` r
-pyear <- seq(min(dat2$year), 2030, 1)
+predict(fit, newdata=list(year=c(2093)))
+```
+
+    ##        1 
+    ## 100.5253
+
+``` r
+pyear <- seq(min(dat2$year), 2093, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -246,7 +260,7 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### Linear regression for low income countries
 
@@ -277,7 +291,14 @@ summary(fit)
     ## F-statistic: 0.4943 on 1 and 22 DF,  p-value: 0.4894
 
 ``` r
-pyear <- seq(min(dat2$year), 2030, 1)
+predict(fit, newdata=list(year=c(2068)))
+```
+
+    ##        1 
+    ## 100.2524
+
+``` r
+pyear <- seq(min(dat2$year), 2068, 1)
 
 inds <- list("CIL"=c(17,"red"), "GCI"=c(16,"blue"))
 plot(c(), c(), xlim = c(min(pyear), max(pyear)), ylim = c(0,100),
@@ -292,14 +313,14 @@ matlines(pyear, predict(fit, newdata=list(year=pyear), interval="confidence"), l
 legend("bottomright", legend=names(inds), col=c("red","blue","purple"), lty=0,  cex = 0.75, bg = "transparent", pch=c(17,16,18), box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ### Summary of linear regression with average values
 
 ``` r
-pyear <- seq(min(dat$year), 2030, 1)
+pyear <- seq(min(dat$year), 2095, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 
@@ -314,12 +335,12 @@ legend("bottomright", legend=c("upper middle income","high income","low income",
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
-pyear <- seq(min(dat$year), 2030, 1)
+pyear <- seq(min(dat$year), 2095, 1)
 plot(x=pyear, y=c(), xlim = c(min(pyear), max(pyear)), ylim=c(0,100), ylab = "ICT.SKILL", xlab = "year", xaxt='n',yaxt='n')
-axis(1, at = seq(min(pyear),max(pyear), 1), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
+axis(1, at = seq(min(pyear),max(pyear), 5), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 axis(2, at = seq(0, 100, 10), tck = 1, lty = 4, col = "lightgray", lwd = 0.75)
 
 colors <- c("green","blue","red","orange")
@@ -333,4 +354,4 @@ legend("bottomright", legend=c("upper middle income","high income","low income",
        col=colors, lty=0,  cex = 0.75, bg = "transparent", pch=16, box.lty=0)
 ```
 
-![](regression_ict_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](regression_ict_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
